@@ -1,0 +1,6 @@
+# Ignore Mac system files
+.DS_Store
+
+# Ignore any log files and temporary files
+*.log
+*.tmp

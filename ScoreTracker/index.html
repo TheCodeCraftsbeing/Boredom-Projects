@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Game Score Tracker</title>
+</head>
+<body>
+
+<!-- Form to get the number of participants -->
+<div>
+    <label for="numParticipants">Number of Participants: </label>
+    <input type="number" id="numParticipants" min="1">
+    <button onclick="createTable()">Submit</button>
+</div>
+
+<!-- The dynamic table for score tracking -->
+<table id="scoreTable" border="1">
+    <thead>
+        <tr id="nameRow">
+            <th>Details</th>
+        </tr>
+    </thead>
+    <tbody id="tableBody">
+        <tr id="totalRow">
+            <td>Total</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- Button to add a round -->
+<button onclick="addRound()">Add Round</button>
+
+<script>
+    let participants = [];
+    let roundCount = 0;
+
+    // Function to create the table after getting the number of participants
+    function createTable() {
+        const numParticipants = document.getElementById('numParticipants').value;
+        const nameRow = document.getElementById('nameRow');
+        const totalRow = document.getElementById('totalRow');
+
+        // Clear previous participants if any
+        nameRow.innerHTML = '<th>Details</th>';
+        totalRow.innerHTML = '<td>Total</td>';
+        document.querySelectorAll('.roundRow').forEach(row => row.remove());
+
+        // Create a column for each participant with name and total
+        for (let i = 0; i < numParticipants; i++) {
+            const nameCell = document.createElement('th');
+            const nameInput = document.createElement('input');
+            nameInput.type = 'text';
+            nameInput.placeholder = `Participant ${i + 1}`;
+            nameInput.id = `name-${i}`;
+            nameCell.appendChild(nameInput);
+            nameRow.appendChild(nameCell);
+
+            const totalCell = document.createElement('td');
+            totalCell.innerHTML = '0'; // Start with total as 0
+            totalCell.id = `total-${i}`;
+            totalRow.appendChild(totalCell);
+        }
+        participants = Array(parseInt(numParticipants)).fill(0);
+        roundCount = 0;
+    }
+
+    // Function to dynamically add a new round row
+    function addRound() {
+        roundCount++;
+        const numParticipants = participants.length;
+        const tableBody = document.getElementById('tableBody');
+
+        // Create a new row for the round
+        const roundRow = document.createElement('tr');
+        roundRow.classList.add('roundRow');
+        const roundHeaderCell = document.createElement('td');
+        roundHeaderCell.innerHTML = `Round ${roundCount}`;
+        roundRow.appendChild(roundHeaderCell);
+
+        // Add round input for each participant
+        for (let i = 0; i < numParticipants; i++) {
+            const roundCell = document.createElement('td');
+            const roundInput = document.createElement('input');
+            roundInput.type = 'number';
+            roundInput.setAttribute('id', `round-${i}-${roundCount}`);
+            roundInput.setAttribute('onchange', `updateTotal(${i})`);
+
+            roundCell.appendChild(roundInput);
+            roundRow.appendChild(roundCell);
+        }
+
+        // Append the new round row to the table
+        tableBody.appendChild(roundRow);
+    }
+
+    // Function to update the total score for a participant
+    function updateTotal(participantIndex) {
+        let total = 0;
+
+        // Sum up all round scores for the participant
+        for (let round = 1; round <= roundCount; round++) {
+            const roundInput = document.getElementById(`round-${participantIndex}-${round}`);
+            const roundValue = parseInt(roundInput.value) || 0;
+            total += roundValue;
+        }
+
+        // Update the total score in the table
+        const totalCell = document.getElementById(`total-${participantIndex}`);
+        totalCell.innerHTML = total;
+    }
+</script>
+
+</body>
+</html>
