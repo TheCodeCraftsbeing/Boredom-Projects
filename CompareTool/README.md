@@ -30,5 +30,3 @@ Perfect for developers who need a quick way to compare inputs — no backend or 
 
 ---
 
-## 📁 Project Structure
-
