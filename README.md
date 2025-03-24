@@ -5,6 +5,7 @@ Welcome to Boredom Projects! This repository contains small projects made for fu
 
 1. [Score Tracker](./ScoreTracker/): A simple score-tracking web app for card games.
 2. [Time Utility App](./TimeUtilityApp/): A simple Time Utility App.
+3. [Compare Tool](./CompareTool/): A simple Text-Text Comaprison App.
 
 Stay tuned for more fun projects!
 
